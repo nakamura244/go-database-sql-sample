@@ -102,7 +102,7 @@ func (repo *SQLRepository) InsertUserWithTx(u *User) (uint, error) {
 	}
 	if rowsAffect != 1 {
 		tx.Rollback()
-		return 0, err
+		return 0, errors.New("rowsAffect != 0 error")
 	}
 
 	err = tx.Commit()

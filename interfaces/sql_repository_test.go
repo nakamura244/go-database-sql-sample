@@ -22,6 +22,7 @@ type Mock struct {
 	// 8 -> Begin error
 	// 9 -> Commit error
 	// 10 -> Rollback error
+	// 11 -> RowsAffected = 0 error
 	errNo   int
 	nextCnt int
 	err     error
@@ -110,6 +111,9 @@ func (m Mock) LastInsertId() (int64, error) {
 func (m Mock) RowsAffected() (int64, error) {
 	if m.errNo == 7 {
 		return int64(0), errors.New("error row affected")
+	}
+	if m.errNo == 11 {
+		return int64(0), nil
 	}
 	return int64(1), nil
 }
@@ -270,6 +274,10 @@ func TestSQLRepository_InsertUserWithTx(t *testing.T) {
 			err: nil,
 		},
 		{
+			m:   Mock{errNo: 8},
+			err: errors.New("error begin"),
+		},
+		{
 			m:   Mock{errNo: 5},
 			err: errors.New("error execute"),
 		},
@@ -280,6 +288,10 @@ func TestSQLRepository_InsertUserWithTx(t *testing.T) {
 		{
 			m:   Mock{errNo: 7},
 			err: errors.New("error row affected"),
+		},
+		{
+			m:   Mock{errNo: 11},
+			err: errors.New("rowsAffect != 0 error"),
 		},
 		{
 			m:   Mock{errNo: 9},
