@@ -1,7 +1,7 @@
 # このリポジトリに関して
 実際のmysqlを使わずにunit testを実現するためのサンプルコード
 
-see detail : blog url
+see detail : https://tsuyoshi-nakamura.hatenablog.com/entry/2019/07/01/094425
 
 
 # ディレクトリ構成に関して
